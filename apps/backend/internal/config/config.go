@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/knadh/koanf/providers/env"
+	"github.com/knadh/koanf/providers/env/v2"
 	"github.com/knadh/koanf/v2"
 	"github.com/rs/zerolog"
 )
@@ -64,19 +64,23 @@ func LoadConfig() (*Config, error) {
 
 	k := koanf.New(".")
 
-	err := k.Load(env.Provider(
-		"BOILERPLATE_",
-		".",
-	    func(k, v string) (string, any) {
-			k = strings.TrimPrefix(k, "BOILERPLATE_")
-			k = strings.ToLower(k)
-			k = strings.ReplaceAll(k, "_", ".")
+	err := k.Load(env.Provider(".", env.Opt{
+		Prefix: "BOILERPLATE_",
+		TransformFunc: func(k, v string) (string, any) {
+			// Transform the key.
+			k = strings.ReplaceAll(strings.ToLower(strings.TrimPrefix(k, "MYVAR_")), "_", ".")
 
+			// Transform the value into slices, if they contain spaces.
+			// Eg: MYVAR_TAGS="foo bar baz" -> tags: ["foo", "bar", "baz"]
+			// This is to demonstrate that string values can be transformed to any type
+			// where necessary.
 			if strings.Contains(v, " ") {
 				return k, strings.Split(v, " ")
 			}
+
 			return k, v
-		}), nil)
+		},
+	}), nil)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("could not load initial env variables")
 	}
