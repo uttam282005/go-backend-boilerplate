@@ -1,3 +1,4 @@
+// Package database provides functionality to connect and interact with the PostgreSQL database.
 package database
 
 import (
