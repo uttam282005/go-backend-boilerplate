@@ -77,7 +77,7 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerPkg.Lo
 
 func (s *Server) SetupHTTPServer(handler http.Handler) {
 	s.httpServer = &http.Server{
-		Addr:         ":" + s.Config.Server.Port,
+		Addr:         ":" + fmt.Sprintf("%d", s.Config.Server.Port),
 		Handler:      handler,
 		ReadTimeout:  time.Duration(s.Config.Server.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(s.Config.Server.WriteTimeout) * time.Second,
@@ -91,7 +91,7 @@ func (s *Server) Start() error {
 	}
 
 	s.Logger.Info().
-		Str("port", s.Config.Server.Port).
+		Str("port", fmt.Sprintf("%d", s.Config.Server.Port)).
 		Str("env", s.Config.Primary.Env).
 		Msg("starting server")
 
