@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/sriniously/go-boilerplate/internal/config"
-	"github.com/sriniously/go-boilerplate/internal/database"
-	"github.com/sriniously/go-boilerplate/internal/server"
+	"github.com/uttam282005/go-backend-boilerplate/internal/config"
+	"github.com/uttam282005/go-backend-boilerplate/internal/database"
+	"github.com/uttam282005/go-backend-boilerplate/internal/server"
 )
 
 // CreateTestServer creates a server instance for testing

@@ -3,7 +3,6 @@ package config
 import (
 	"os"
 	"strings"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/joho/godotenv/autoload"
@@ -27,7 +26,7 @@ type Primary struct {
 }
 
 type ServerConfig struct {
-	Port               int      `koanf:"port" validate:"required"`
+	Port               string   `koanf:"port" validate:"required"`
 	ReadTimeout        int      `koanf:"read_timeout" validate:"required"`
 	WriteTimeout       int      `koanf:"write_timeout" validate:"required"`
 	IdleTimeout        int      `koanf:"idle_timeout" validate:"required"`
@@ -35,16 +34,16 @@ type ServerConfig struct {
 }
 
 type DatabaseConfig struct {
-	Host            string        `koanf:"host" validate:"required"`
-	Port            int           `koanf:"port" validate:"required"`
-	User            string        `koanf:"user" validate:"required"`
-	Password        string        `koanf:"password"`
-	Name            string        `koanf:"name" validate:"required"`
-	SSLMode         string        `koanf:"ssl_mode" validate:"required"`
-	MaxOpenConns    time.Duration `koanf:"max_open_conns" validate:"required"`
-	MaxIdleConns    time.Duration `koanf:"max_idle_conns" validate:"required"`
-	ConnMaxLifetime time.Duration `koanf:"conn_max_lifetime" validate:"required"`
-	ConnMaxIdleTime time.Duration `koanf:"conn_max_idle_time" validate:"required"`
+	Host            string `koanf:"host" validate:"required"`
+	Port            int    `koanf:"port" validate:"required"`
+	User            string `koanf:"user" validate:"required"`
+	Password        string `koanf:"password"`
+	Name            string `koanf:"name" validate:"required"`
+	SSLMode         string `koanf:"ssl_mode" validate:"required"`
+	MaxOpenConns    int    `koanf:"max_open_conns" validate:"required"`
+	MaxIdleConns    int    `koanf:"max_idle_conns" validate:"required"`
+	ConnMaxLifetime int    `koanf:"conn_max_lifetime" validate:"required"`
+	ConnMaxIdleTime int    `koanf:"conn_max_idle_time" validate:"required"`
 }
 type RedisConfig struct {
 	Address string `koanf:"address" validate:"required"`
@@ -59,8 +58,7 @@ type AuthConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
-	output := zerolog.ConsoleWriter{Out: os.Stdout}
-	logger := zerolog.New(output).With().Timestamp().Logger()
+	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr}).With().Timestamp().Logger()
 
 	k := koanf.New(".")
 
@@ -68,7 +66,7 @@ func LoadConfig() (*Config, error) {
 		Prefix: "BOILERPLATE_",
 		TransformFunc: func(k, v string) (string, any) {
 			// Transform the key.
-			k = strings.ReplaceAll(strings.ToLower(strings.TrimPrefix(k, "MYVAR_")), "_", ".")
+			k = strings.ToLower(strings.TrimPrefix(k, "BOILERPLATE_"))
 
 			// Transform the value into slices, if they contain spaces.
 			// Eg: MYVAR_TAGS="foo bar baz" -> tags: ["foo", "bar", "baz"]
@@ -85,28 +83,33 @@ func LoadConfig() (*Config, error) {
 		logger.Fatal().Err(err).Msg("could not load initial env variables")
 	}
 
-	cfg := &Config{}
-	if err := k.Unmarshal("", cfg); err != nil {
+	mainConfig := &Config{}
+
+	err = k.Unmarshal("", mainConfig)
+	if err != nil {
 		logger.Fatal().Err(err).Msg("could not unmarshal main config")
 	}
 
 	validate := validator.New()
-	if err := validate.Struct(cfg); err != nil {
+
+	err = validate.Struct(mainConfig)
+	if err != nil {
 		logger.Fatal().Err(err).Msg("config validation failed")
 	}
 
-	if cfg.Observability == nil {
-		cfg.Observability = DefaultObservabilityConfig()
+	// Set default observability config if not provided
+	if mainConfig.Observability == nil {
+		mainConfig.Observability = DefaultObservabilityConfig()
 	}
 
 	// Override service name and environment from primary config
-	cfg.Observability.ServiceName = "boilerplate"
-	cfg.Observability.Environment = cfg.Primary.Env
+	mainConfig.Observability.ServiceName = "boilerplate"
+	mainConfig.Observability.Environment = mainConfig.Primary.Env
 
 	// Validate observability config
-	if err := cfg.Observability.Validate(); err != nil {
+	if err := mainConfig.Observability.Validate(); err != nil {
 		logger.Fatal().Err(err).Msg("invalid observability config")
 	}
 
-	return cfg, nil
+	return mainConfig, nil
 }
