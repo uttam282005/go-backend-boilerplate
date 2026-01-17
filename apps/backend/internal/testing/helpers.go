@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/server"
 	"github.com/stretchr/testify/require"
+	"github.com/uttam282005/tasker/internal/server"
 )
 
 // SetupTest prepares a test environment with a database and server

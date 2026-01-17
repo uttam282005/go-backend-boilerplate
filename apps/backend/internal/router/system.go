@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/uttam282005/go-backend-boilerplate/internal/handler"
+	"github.com/uttam282005/tasker/internal/handler"
 
 	"github.com/labstack/echo/v4"
 )

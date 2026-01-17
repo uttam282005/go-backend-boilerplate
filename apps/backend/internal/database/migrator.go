@@ -9,10 +9,10 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
 	"github.com/jackc/pgx/v5"
 	tern "github.com/jackc/tern/v2/migrate"
 	"github.com/rs/zerolog"
+	"github.com/uttam282005/tasker/internal/config"
 )
 
 //go:embed migrations/*.sql

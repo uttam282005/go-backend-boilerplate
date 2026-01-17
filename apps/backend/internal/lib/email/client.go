@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/resend/resend-go/v2"
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
+	"github.com/uttam282005/tasker/internal/config"
 )
 
 type Client struct {
@@ -23,7 +23,7 @@ func NewClient(cfg *config.Config, logger *zerolog.Logger) *Client {
 	}
 }
 
-func (c *Client) SendEmail(to, subject string, templateName Template, data map[string]string) error {
+func (c *Client) SendEmail(to, subject string, templateName Template, data map[string]any) error {
 	tmplPath := fmt.Sprintf("%s/%s.html", "templates/emails", templateName)
 
 	tmpl, err := template.ParseFiles(tmplPath)

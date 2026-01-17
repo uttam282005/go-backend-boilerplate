@@ -9,11 +9,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
-	"github.com/uttam282005/go-backend-boilerplate/internal/database"
 	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"github.com/uttam282005/tasker/internal/config"
+	"github.com/uttam282005/tasker/internal/database"
 )
 
 type TestDB struct {

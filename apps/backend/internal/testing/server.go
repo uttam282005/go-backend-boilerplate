@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
-	"github.com/uttam282005/go-backend-boilerplate/internal/database"
-	"github.com/uttam282005/go-backend-boilerplate/internal/server"
+	"github.com/uttam282005/tasker/internal/config"
+	"github.com/uttam282005/tasker/internal/database"
+	"github.com/uttam282005/tasker/internal/server"
 )
 
 // CreateTestServer creates a server instance for testing
@@ -23,7 +23,7 @@ func CreateTestServer(logger *zerolog.Logger, db *TestDB) *server.Server {
 			},
 			NewRelic: config.NewRelicConfig{
 				LicenseKey:                "",    // Empty for tests
-				AppLogForwardingEnabled:   false, // Disabled for tests  
+				AppLogForwardingEnabled:   false, // Disabled for tests
 				DistributedTracingEnabled: false, // Disabled for tests
 				DebugLogging:              false, // Disabled for tests
 			},

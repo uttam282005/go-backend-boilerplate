@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/uttam282005/go-backend-boilerplate/internal/server"
-	"github.com/uttam282005/go-backend-boilerplate/internal/service"
+	"github.com/uttam282005/tasker/internal/server"
+	"github.com/uttam282005/tasker/internal/service"
 )
 
 type Handlers struct {

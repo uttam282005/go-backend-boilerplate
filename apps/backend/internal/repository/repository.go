@@ -1,9 +1,17 @@
 package repository
 
-import "github.com/uttam282005/go-backend-boilerplate/internal/server"
+import "github.com/uttam282005/tasker/internal/server"
 
-type Repositories struct{}
+type Repositories struct {
+	Todo     *TodoRepository
+	Comment  *CommentRepository
+	Category *CategoryRepository
+}
 
 func NewRepositories(s *server.Server) *Repositories {
-	return &Repositories{}
+	return &Repositories{
+		Todo:     NewTodoRepository(s),
+		Comment:  NewCommentRepository(s),
+		Category: NewCategoryRepository(s),
+	}
 }

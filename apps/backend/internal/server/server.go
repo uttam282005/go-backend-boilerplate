@@ -10,10 +10,10 @@ import (
 	"github.com/newrelic/go-agent/v3/integrations/nrredis-v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
-	"github.com/uttam282005/go-backend-boilerplate/internal/database"
-	"github.com/uttam282005/go-backend-boilerplate/internal/lib/job"
-	loggerPkg "github.com/uttam282005/go-backend-boilerplate/internal/logger"
+	"github.com/uttam282005/tasker/internal/config"
+	"github.com/uttam282005/tasker/internal/database"
+	"github.com/uttam282005/tasker/internal/lib/job"
+	loggerPkg "github.com/uttam282005/tasker/internal/logger"
 )
 
 type Server struct {
@@ -77,7 +77,7 @@ func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerPkg.Lo
 
 func (s *Server) SetupHTTPServer(handler http.Handler) {
 	s.httpServer = &http.Server{
-		Addr:         ":" + fmt.Sprintf("%d", s.Config.Server.Port),
+		Addr:         ":" + s.Config.Server.Port,
 		Handler:      handler,
 		ReadTimeout:  time.Duration(s.Config.Server.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(s.Config.Server.WriteTimeout) * time.Second,
@@ -91,7 +91,7 @@ func (s *Server) Start() error {
 	}
 
 	s.Logger.Info().
-		Str("port", fmt.Sprintf("%d", s.Config.Server.Port)).
+		Str("port", s.Config.Server.Port).
 		Str("env", s.Config.Primary.Env).
 		Msg("starting server")
 

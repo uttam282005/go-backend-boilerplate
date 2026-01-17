@@ -15,8 +15,8 @@ import (
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/newrelic/go-agent/v3/integrations/nrpgx5"
 	"github.com/rs/zerolog"
-	"github.com/uttam282005/go-backend-boilerplate/internal/config"
-	loggerConfig "github.com/uttam282005/go-backend-boilerplate/internal/logger"
+	"github.com/uttam282005/tasker/internal/config"
+	loggerConfig "github.com/uttam282005/tasker/internal/logger"
 )
 
 type Database struct {

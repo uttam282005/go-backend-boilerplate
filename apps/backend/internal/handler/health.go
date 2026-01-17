@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/uttam282005/go-backend-boilerplate/internal/middleware"
-	"github.com/uttam282005/go-backend-boilerplate/internal/server"
+	"github.com/uttam282005/tasker/internal/middleware"
+	"github.com/uttam282005/tasker/internal/server"
 
 	"github.com/labstack/echo/v4"
 )
